@@ -61,7 +61,7 @@
     <details id="impl"><summary>Implementation Details</summary>
       <div class="body">
         <p>We do everything post-RoPE, since these are inputs that actually directly enter attention / the dot product, even though the pre-RoPE K/Q's are more low-rank. RoPE shows up here as a rotation of the
-        Q/K's around the PC1 axis &mdash (note the <i>i</i>-th RoPE pair is rotated by
+        Q/K's around the PC1 axis in L0H2 (note the <i>i</i>-th RoPE pair is rotated by
         <code>freq_i &middot; pos_idx</code>. For any references to key and queries, assume post rope.</p>
         <p>For each layer, for each query head independently (keys shared within its GQA group),
         we find PC1, PC2, PC3 with:</p>
@@ -80,7 +80,7 @@ top5      = np.argsort(attention)[::-1][:5] </code></pre>
         <p>Finally we project all vectors onto the PCA basis and draw
         them with Plotly. The projection is lossy (top-3 &asymp; 50&ndash;65% of variance) and the
         top-5 come from the <i>full</i>-dimensional attention, so a highlighted key may not be the
-        nearest one in the 3-D view.</p>
+        nearest one in the 3-D view, although under reset view, we see they approximately are. </p>
       </div>
     </details>
   </div>
