@@ -167,15 +167,17 @@ TEMPLATE = r"""<!DOCTYPE html>
   .tok.topk{text-decoration:underline;text-decoration-color:crimson;text-decoration-thickness:2px}
   .legend{padding:6px 12px;font-size:12px;color:#555;border-top:1px solid #eee}
   .sw{display:inline-block;width:11px;height:11px;border-radius:2px;vertical-align:middle;margin:0 3px}
-  #impl{border-top:1px solid #eee;font-size:12px}
-  #impl>summary{padding:8px 12px;cursor:pointer;background:#eaf1ff;color:#1565c0;font-weight:600;list-style:none;user-select:none}
+  #impl{border-top:1px solid #eee}
+  #impl>summary{padding:11px 14px;cursor:pointer;background:#eaf1ff;color:#1565c0;font-weight:600;font-size:13px;letter-spacing:.02em;list-style:none;user-select:none}
+  #impl>summary:hover{background:#dde8ff}
   #impl>summary::-webkit-details-marker{display:none}
-  #impl>summary::before{content:'\25B8  '}
-  #impl[open]>summary::before{content:'\25BE  '}
-  #impl .body{padding:8px 12px 12px;max-height:45vh;overflow:auto;color:#333}
-  #impl p{margin:.5em 0}
-  #impl pre{background:#f6f8fa;padding:8px;border-radius:5px;overflow:auto}
-  #impl code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.45}
+  #impl>summary::before{content:'\25B8';display:inline-block;margin-right:9px;transition:transform .15s ease}
+  #impl[open]>summary::before{transform:rotate(90deg)}
+  #impl .body{padding:6px 16px 18px;max-height:48vh;overflow:auto;color:#2b2b2b;font-size:13.5px;line-height:1.65}
+  #impl .body p{margin:.75em 0}
+  #impl pre{background:#f6f8fa;border:1px solid #e4e8ee;padding:11px 13px;border-radius:6px;overflow:auto;margin:.85em 0}
+  #impl pre code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.55;color:#24292f}
+  #impl :not(pre)>code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#0b3a82}
 </style></head>
 <body><div id="wrap">
   <div id="left"><div id="plot"></div></div>
@@ -231,7 +233,7 @@ top5      = np.argsort(attention)[::-1][:5]    # indices of the 5 most-attended 
 <script>
 const M = __JSON__;
 const N = M.tokens.length, tokens = M.tokens, TOPK = M.TOPK, hd = M.hd;
-let H = M.default, cur = 0, coneSize = 1, inited = false;
+let H = M.default, cur = 0, inited = false;
 const cache = {}; cache[M.defL + '_' + M.defH] = M.default;
 
 const selL = document.getElementById('selL'), selH = document.getElementById('selH');
@@ -249,8 +251,6 @@ const textDiv = document.getElementById('text');
 textDiv.innerHTML = h0;
 textDiv.addEventListener('click', e=>{ if(e.target.dataset.i!==undefined) setCur(+e.target.dataset.i); });
 
-function median(a){const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/2)]||1;}
-
 function lineMarker(indices, coords, color, width, mk, opacity, nm){
   let xs=[],ys=[],zs=[],mx=[],my=[],mz=[],tx=[];
   for(const i of indices){
@@ -265,16 +265,6 @@ function lineMarker(indices, coords, color, width, mk, opacity, nm){
      opacity:opacity,name:nm,showlegend:false,text:tx,hovertemplate:'%{text}<extra></extra>'}
   ];
 }
-function cones(indices, coords, color){
-  let x=[],y=[],z=[],u=[],v=[],w=[];
-  for(const i of indices){
-    const p=coords[i], n=Math.hypot(p[0],p[1],p[2])||1;
-    x.push(p[0]);y.push(p[1]);z.push(p[2]); u.push(p[0]/n);v.push(p[1]/n);w.push(p[2]/n);
-  }
-  return {type:'cone',x,y,z,u,v,w,anchor:'tip',sizemode:'absolute',sizeref:coneSize,
-    colorscale:[[0,color],[1,color]],showscale:false,name:'top-K key',hoverinfo:'skip'};
-}
-
 // uirevision keeps the camera fixed across token steps / head switches; reset button overrides it.
 const layout = {margin:{l:0,r:0,t:0,b:0},showlegend:true,uirevision:'keep',
   legend:{x:0,y:1,bgcolor:'rgba(255,255,255,.6)'},
@@ -292,8 +282,7 @@ function draw(){
   const queries=keys.filter(i=>i!==cur);
   let traces=[];
   traces=traces.concat(lineMarker(nonTk,Kr,'crimson',2,3,0.45,'key'));
-  traces=traces.concat(lineMarker(tk,Kr,'crimson',7,6,1.0,'top-K key'));
-  traces.push(cones(tk,Kr,'crimson'));
+  traces=traces.concat(lineMarker(tk,Kr,'crimson',8,9,1.0,'top-K key'));      // bold (like the query, a touch more)
   traces=traces.concat(lineMarker(queries,Qr,'royalblue',1.5,3,0.30,'query'));
   traces=traces.concat(lineMarker([cur],Qr,'#0d47a1',7,8,1.0,'current query'));
   if(!inited){ Plotly.newPlot('plot',traces,layout,{responsive:true}); inited=true; resetView(); }
@@ -332,7 +321,7 @@ function showVar(){
   document.getElementById('kvlbl').textContent='(kv'+H.kvh+')';
 }
 
-function render(){ coneSize=0.28*median(H.Kr.map(p=>Math.hypot(p[0],p[1],p[2]))); draw(); shadeText(); showVar(); }
+function render(){ draw(); shadeText(); showVar(); }
 
 function loadHead(l,h){
   const key=l+'_'+h;
