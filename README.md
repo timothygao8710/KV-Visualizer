@@ -1,8 +1,24 @@
 # Llama-3.2-1B Attention Explorer
 
-Using the low-rankedness of the Q-K space (1 -- paper low rankness, 2 -- paper on qk space is shared while v is not,3 -- using this fact for kv compression) to visualize the mechanisms behind attention. We see known phenomnoms like RoPE rotation litearlly instantianting itself physically as a rotation in L0H2 (reset view), attention sink being close to all the queries in L10H1, and <q, k> = ||q|| ||k|| cos(theta), the cos(theta) term most explains the attention score for Llama.
-
 https://timothygao8710.github.io/KV-Visualizer/
+
+Using the low-rankness of the query-key space ([1][1], [2][2], [3][3]) to visualize mechanisms behind attention.
+
+The visual lets us directly observe well-known emperical LLM findings. In L10H1, the attention sink appears close to nearly every query [4]. In L0H2, RoPE literally appears as a rotation (reset view) [5]. Across layers and heads, the cone-shaped geometry becomes visible in the QK point cloud [6]. Scaled dot-product attention is driven by query-key dot products,
+
+$$
+\langle q, k \rangle = \|q\| \|k\| \cos(\theta),
+$$
+
+for Llama, it is known the angular component, $\cos(\theta)$, explains most of the score variation; we see this is true in the visual as well, the top-K keys for each query are approximately the closest in angle [7].
+
+[1]: https://arxiv.org/abs/2602.04752
+[2]: https://arxiv.org/abs/2001.04451
+[3]: https://arxiv.org/abs/2408.05646
+[4]: https://arxiv.org/abs/2309.17453
+[5]: https://arxiv.org/abs/2104.09864
+[6]: https://arxiv.org/abs/2601.08297
+[7]: https://arxiv.org/abs/2010.04245
 
 ## Reproduce the data
 
