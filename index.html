@@ -65,7 +65,7 @@
     pre-RoPE vectors are more low-rank
   </a>. RoPE shows up here as a rotation of the
         Q/K's around the PC1 axis in L0H2 (note the <i>i</i>-th RoPE pair is rotated by
-        <code>freq_i &middot; pos_idx</code>. For any references to key and queries, assume post rope.</p>
+        <code>freq_i &middot; pos_idx</code>). For any references to key and queries, assume post rope.</p>
         <p>For each layer, for each query head independently (keys shared within its GQA group),
         we find PC1, PC2, PC3 with:</p>
         <pre><code>def get_comps(Q, K):                      # Q, K: (seq_len, head_dim)
