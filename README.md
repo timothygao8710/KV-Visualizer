@@ -1,6 +1,6 @@
 # Llama-3.2-1B Attention Explorer
 
-https://timothygao8710.github.io/KV-Visualizer/
+https://timothygao8710.github.io/QK-Visualizer/
 
 Using the low-rankness of the query-key space ([1][1], [2][2], [3][3]) to visualize mechanisms behind attention.
 
