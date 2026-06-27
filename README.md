@@ -1,4 +1,4 @@
-# Llama-3.2-1B Attention Explorer
+# Llama 3.2 1B Instruct QK Visualizer
 
 https://timothygao8710.github.io/QK-Visualizer/
 
