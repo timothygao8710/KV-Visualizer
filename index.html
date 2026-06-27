@@ -167,9 +167,7 @@ function shadeText(){
 
 function showVar(){
   const ev=H.ev, c3=(ev[0]+ev[1]+ev[2]);
-  let s='<b>3-D plot variance</b> (of '+hd+' dims): '
-    + 'PC1 '+(ev[0]*100).toFixed(1)+'% &middot; PC2 '+(ev[1]*100).toFixed(1)
-    + '% &middot; PC3 '+(ev[2]*100).toFixed(1)+'% &rarr; <b>top-3 = '+(c3*100).toFixed(1)+'%</b><br>';
+  let s='Variance Explained: ';
   for(let i=0;i<ev.length;i++){
     const col=i<3?'crimson':'#aaa';
     s+='<span class="bar" style="width:'+(ev[i]*260).toFixed(0)+'px;background:'+col+'"></span> '
