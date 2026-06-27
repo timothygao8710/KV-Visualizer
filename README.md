@@ -12,7 +12,8 @@ $$
 
 for Llama, it is known the angular component, $\cos(\theta)$, explains most of the score variation; we see this is true in the visual as well, the top-K keys for each query are approximately the closest in angle [7].
 
-<img width="1276" height="906" alt="qkviz" src="https://github.com/user-attachments/assets/491bc394-509d-4ae7-8a5b-be05516ca2f6" />
+
+<img width="1276" height="906" alt="qkviz" src="https://github.com/timothygao8710/QK-Visualizer/blob/main/qkviz.gif?raw=true" />
 
 [1]: https://arxiv.org/abs/2602.04752
 [2]: https://arxiv.org/abs/2001.04451
